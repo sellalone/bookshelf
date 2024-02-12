@@ -1,5 +1,9 @@
 import styled from '@emotion/styled'
+import {keyframes} from '@emotion/core'
 import {Dialog as ReachDialog} from '@reach/dialog'
+import {FaSpinner} from 'react-icons/fa'
+import * as colors from '../styles/colors'
+import * as mq from '../styles/media-queries'
 
 // 🐨 create a button styled component here called "Button"
 // make it look nice and allow it to support a "variant" prop which can be
@@ -15,30 +19,49 @@ import {Dialog as ReachDialog} from '@reach/dialog'
 // 🐨 Feel free to create as many reusable styled components here as you'd like
 // 💰 in my finished version I have: Button, Input, CircleButton, Dialog, FormGroup
 
-// 🎨 here are a bunch of styles you can copy/paste if you want
-// Button:
-//   padding: '10px 15px',
-//   border: '0',
-//   lineHeight: '1',
-//   borderRadius: '3px',
+const spin = keyframes({
+  '0%': {transform: 'rotate(0deg)'},
+  '100%': {transform: 'rotate(360deg)'},
+})
 
-// Button variant="primary" (in addition to the above styles)
-//   background: '#3f51b5',
-//   color: 'white',
+const Spinner = styled(FaSpinner)({
+  animation: `${spin} 1s linear infinite`,
+})
+Spinner.defaultProps = {
+  'aria-label': 'loading',
+}
 
-// Button variant="secondary" (in addition to the above styles)
-//   background: '#f1f2f7',
-//   color: '#434449',
+const buttonVariants = {
+  primary: {
+    background: colors.indigo,
+    color: colors.base,
+  },
+  secondary: {
+    background: colors.gray,
+    color: colors.text,
+  },
+}
+const Button = styled.button(
+  {
+    padding: '10px 15px',
+    border: '0',
+    lineHeight: '1',
+    borderRadius: '3px',
+  },
+  ({variant = 'primary'}) => buttonVariants[variant],
+)
 
-// Input
-//   borderRadius: '3px',
-//   border: '1px solid #f1f1f4',
-//   background: '#f1f2f7',
-//   padding: '8px 12px',
+const Input = styled.input({
+  borderRadius: '3px',
+  border: `1px solid ${colors.gray10}`,
+  background: '#f1f2f7',
+  padding: '8px 12px',
+})
 
-// FormGroup
-//   display: 'flex',
-//   flexDirection: 'column',
+const FormGroup = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+})
 
 // 💰 I'm giving a few of these to you:
 const CircleButton = styled.button({
@@ -52,7 +75,7 @@ const CircleButton = styled.button({
   justifyContent: 'center',
   background: 'white',
   color: '#434449',
-  border: `1px solid #f1f1f4`,
+  border: `1px solid ${colors.gray10}`,
   cursor: 'pointer',
 })
 
@@ -62,10 +85,10 @@ const Dialog = styled(ReachDialog)({
   paddingBottom: '3.5em',
   boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.2)',
   margin: '20vh auto',
-  '@media (max-width: 991px)': {
+  [mq.small]: {
     width: '100%',
     margin: '10vh auto',
   },
 })
 
-export {CircleButton, Dialog}
+export {CircleButton, Dialog, Button, Input, FormGroup, Spinner}
